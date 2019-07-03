@@ -1,15 +1,19 @@
 source 'https://rubygems.org'
 
-ruby '2.2.3'
-gem 'rails', '3.2.21'
-gem 'scoped_search', '~> 2.6.0'
-gem 'RedCloth', '~> 4.2.9'
-gem 'dynamic_form', '~> 1.1.4'
-gem 'jquery-rails', '~> 3.0.4'
-gem 'thin', '~> 1.5.0'
+ruby '2.1.0'
+gem 'rails', '4.0.0'
+gem 'scoped_search' #, '~> 4.1.7'
+gem 'RedCloth'      #, '~> 4.3.2'
+gem 'dynamic_form'  #, '~> 1.1.4'
+gem 'jquery-rails'  #, '~> 4.3.5'
+gem 'thin'          #, '~> 1.7.2'
+gem 'sass-rails'    #,   '~> 5.0.7'
+gem 'coffee-rails'  #, '~> 5.0.0'
+gem 'uglifier'      #, '>= 4.1.20'
+gem 'byebug'
 
 group :production do
-  gem 'pg', '~> 0.15.0'
+  gem 'pg', '~> 1.1.4'
 end
 
 group :test do
@@ -17,16 +21,11 @@ group :test do
 end
 
 group :development, :test do
-  gem 'sqlite3'
+  gem 'sqlite3', '~> 1.3.13'
   gem 'factory_girl'
   gem 'rspec-rails'
   gem 'capybara'
   gem 'coveralls', require: false
 end
 
-group :assets do
-  gem 'sass-rails',   '~> 3.2.6'
-  gem 'coffee-rails', '~> 3.2.2'
 
-  gem 'uglifier', '>= 1.3.0'
-end
