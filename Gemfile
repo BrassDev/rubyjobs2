@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-ruby '2.1.0'
-gem 'rails', '4.1.0'
+ruby '2.2.10'
+gem 'rails', '4.2.0'
 gem 'scoped_search' #, '~> 4.1.7'
 gem 'RedCloth'      #, '~> 4.3.2'
 gem 'dynamic_form'  #, '~> 1.1.4'
@@ -28,6 +28,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'capybara'
   gem 'coveralls', require: false
+end
+
+group :development do
+  gem 'web-console'
 end
 
 group :test do

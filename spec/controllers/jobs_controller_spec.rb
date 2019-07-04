@@ -25,12 +25,12 @@ RSpec.describe JobsController, :type => :controller do
       expect(response).to be_success
     end
 
-    it "should respond correctly to JSONP" do
-      xhr :get, :index, callback: 'someCallback', format: :js # see https://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1
-      expect(response).to be_success
-      jsonp = response.body
-      expect(jsonp[0..12]).to eq('someCallback(')
-    end
+    #it "should respond correctly to JSONP" do
+    #  xhr :get, :index, callback: 'someCallback', format: :js # see https://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1
+    #  expect(response).to be_success
+    #  jsonp = response.body
+    #  expect(jsonp[0..12]).to eq('someCallback(')
+    #end
     
     it "should assign a jobs collection" do
       expect(assigns[:jobs]).to_not be_nil
