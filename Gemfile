@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-ruby '2.2.10'
-gem 'rails', '4.2.0'
+ruby '2.2.2'
+gem 'rails', '5.0.0'
 gem 'scoped_search' #, '~> 4.1.7'
 gem 'RedCloth'      #, '~> 4.3.2'
 gem 'dynamic_form'  #, '~> 1.1.4'
@@ -25,6 +25,7 @@ group :development, :test do
   gem 'sqlite3', '~> 1.3.13'
   # gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master' # requires ruby >= 2.3, higher than current version 2.1.0
   gem 'rspec-rails'
+  gem 'rails-controller-testing'
   gem 'factory_bot_rails'
   gem 'capybara'
   gem 'coveralls', require: false

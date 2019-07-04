@@ -1,6 +1,6 @@
 require 'securerandom'
 
-class Job < ActiveRecord::Base
+class Job < ApplicationRecord
   validates_presence_of :company, :email, :type_id, :location_id, :title, :description, :how_to_apply, :url
   validates_format_of :email, :with => /\A([\w+\-]\.?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, :message => "Invalid email"
 
