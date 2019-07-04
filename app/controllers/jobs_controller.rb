@@ -2,7 +2,7 @@ class JobsController < ApplicationController
 
   def index
     @jobs = Job.recent.search_for(params[:search])
-
+@bobs = ["1", "2"]
     respond_to do |format|
       format.html
       format.rss

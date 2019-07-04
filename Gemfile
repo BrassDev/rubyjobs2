@@ -17,15 +17,19 @@ group :production do
 end
 
 group :test do
+  gem 'shoulda'
   gem 'shoulda-matchers'
 end
 
 group :development, :test do
   gem 'sqlite3', '~> 1.3.13'
-  gem 'factory_girl'
+  # gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master' # requires ruby >= 2.3, higher than current version 2.1.0
   gem 'rspec-rails'
+  gem 'factory_bot_rails'
   gem 'capybara'
   gem 'coveralls', require: false
 end
 
-
+group :test do
+  gem 'better_errors'
+end

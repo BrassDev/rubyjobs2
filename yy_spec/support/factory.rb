@@ -1,6 +1,6 @@
-require 'factory_girl'
+require 'factory_bot'
 
-FactoryGirl.define do
+FactoryBot.define do
   factory :job do
     company       'ACME Inc.'
     url           'www.acme.org'

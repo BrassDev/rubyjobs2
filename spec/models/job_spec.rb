@@ -1,106 +1,78 @@
-describe Job do
-  describe "when creating a job" do
+require 'rails_helper'
+
+RSpec.describe Job, type: :model do
+
+  describe "before saving job" do
+  
     it "should have a key" do
-      @job = create(:job)
-      @job.key.should_not be_nil
+      job = create :job, :new_from_form
+      expect(job.key).not_to eq(nil)
     end
 
     it "should have a unique key" do
-      @job1 = create(:job)
-      @job2 = create(:job)
-      @job1.key.should_not == @job2.key
+      job1 = create :job, :new_from_form
+      job2 = create :job, :new_from_form
+      expect(job1.key).not_to eq(job2.key)
     end
 
     it "should add http on url" do
-      @job = create(:job)
-      @job.url.start_with?("http://").should == true
+      job = create :job, :new_from_form
+      job.url = "www.test.org"
+      job.save!
+      expect(job.url.start_with?("http://")).to be true
     end
 
-    it "should not add http" do
-      @job = create(:job)
-      expected_url = "http://www.test.org"
-      @job.url = expected_url
-      @job.save!
-      @job.url.should == expected_url
+    it "should not add http if http already there" do
+      job = create :job, :new_from_form
+      job.url = "http://www.test.org"
+      job.save!
+      expect(job.url.start_with?("http://http://")).to be false
     end
 
-    it "should not add http on https" do
-      @job = create(:job)
-      expected_url = "https://www.test.org"
-      @job.url = expected_url
-      @job.save!
-      @job.url.should == expected_url
+    it "should not add http if https already there" do
+      job = create :job, :new_from_form
+      job.url = "https://www.test.org"
+      job.save!
+      expect(job.url.start_with?("http://https://")).to be false
     end
-  end
+  
+    it "the key should not change if it already exists" do
+      job = create :job, :with_key
+      pre_save_key = job.key
+      job.description = "Something different"
+      job.save!
+      expect(job.key).to eq(pre_save_key)
+    end
 
-  describe "when saving a job" do
-    it "the key should be the same as before the save" do
-      @job1 = create(:job)
-      pre_save_key = @job1.key
-      @job1.save!
-      @job1.key.should == pre_save_key
-    end
-  end
+  end # "before saving job"
 
   describe "validations" do
     it "should be valid with valid attributes" do
-      create(:job).should be_valid
+      expect(create(:job, :new_from_form)).to be_valid
     end
 
-    it { should validate_presence_of(:company) }
-    it { should validate_presence_of(:email) }
-    it { should validate_presence_of(:type_id) }
-    it { should validate_presence_of(:location_id) }
-    it { should validate_presence_of(:title) }
-    it { should validate_presence_of(:description) }
-    it { should validate_presence_of(:how_to_apply) }
-
-    it "should ensure that email is a valid email" do
-      @job = build(:job, :email => 'invalid@email')
-      @job.should_not be_valid
-      @job.should have(1).error_on(:email)
-    end
-  end
-
-  describe "searching" do
-    it "should be searchable" do
-      Job.should respond_to(:search_for)
+    fields_to_test = [:company, :email, :type_id, :location_id, :title, :description, :how_to_apply, :url]
+    it "should be validate persence of #{fields_to_test.to_s}" do
+      for field in fields_to_test
+        job = create :job, :new_from_form
+        job[field] = nil
+        job.valid? # generate the error messages
+        expect(job.errors.messages[field].to_s).to include "can't be blank"
+      end
     end
 
-    it "should search the company" do
-      Job.search_for('google').length.should == 0
-      create(:job, :company => 'Google')
-      Job.search_for('google').length.should == 1
+    emails_to_test = ["test@test-dot-com", "test-at-test.com"]
+    it "should be validate the email format" do
+      for email_to_test in emails_to_test
+        job = create :job, :new_from_form
+        job.email = email_to_test
+        expect(job).to_not be_valid
+        #job.valid? # generate the error messages
+        expect(job.errors.messages.length).to eq(1)
+        expect(job.errors.messages.to_s).to include "Invalid email"
+      end
     end
+    
+  end # "validations"
 
-    it "should search the title" do
-      Job.search_for('contract').length.should == 0
-      create(:job, :title => 'Developer needed (contract)')
-      Job.search_for('contract').length.should == 1
-    end
-
-    it "should search the description" do
-      Job.search_for('june 2009').length.should == 0
-      create(:job, :description => 'This job starts in June 2009')
-      Job.search_for('june 2009').length.should == 1
-    end
-
-    it "should search the how_to_apply" do
-      Job.search_for('jobs@acme.org').length.should == 0
-      create(:job, :how_to_apply => 'email us - jobs@acme.org')
-      Job.search_for('jobs@acme.org').length.should == 1
-    end
-
-    it "should search the location" do
-      Job.search_for('dublin').length.should == 0
-      create(:job, :location => create(:location, :name => 'Dublin'))
-      Job.search_for('dublin').length.should == 1
-    end
-
-    it "should search the type" do
-      Job.search_for('permanent').length.should == 0
-      create(:job, :type => create(:type, :name => 'Permanent'))
-      Job.search_for('permanent').length.should == 1
-    end
-  end
 end

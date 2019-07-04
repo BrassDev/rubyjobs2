@@ -1,7 +1,7 @@
 require 'securerandom'
 
 class Job < ActiveRecord::Base
-  validates_presence_of :company, :email, :type_id, :location_id, :title, :description, :how_to_apply
+  validates_presence_of :company, :email, :type_id, :location_id, :title, :description, :how_to_apply, :url
   validates_format_of :email, :with => /\A([\w+\-]\.?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, :message => "Invalid email"
 
   # replaced with strong parameters in Rails 4. This is now done in the controller. 
@@ -12,7 +12,10 @@ class Job < ActiveRecord::Base
   belongs_to :location
 
   scoped_search on: [:company, :title, :description, :how_to_apply, :location_name, :type_name] #see http://github.com/wvanbergen/scoped_search/tree/master
-  scope :recent, lambda { { :conditions => ['created_at > ?', 8.week.ago], :order => 'created_at DESC' } }
+  #scope :recent, lambda { { :conditions => ['created_at > ?', 8.week.ago], :order => 'created_at DESC' } }
+  def self.recent
+    where('created_at > ?', 8.week.ago).order('created_at DESC')
+  end
 
   before_save :set_key, :set_http
 
