@@ -6,8 +6,7 @@ RSpec.describe JobsController, :type => :controller do
   describe "the index action" do
     before do
       @job = create :job, :new_from_form
-      #get :index
-      visit '/index'
+      get :index
     end
 
     it "should render correctly" do
@@ -27,7 +26,7 @@ RSpec.describe JobsController, :type => :controller do
     end
 
     it "should respond correctly to JSONP" do
-      get :index, callback: 'someCallback', format: :js
+      xhr :get, :index, callback: 'someCallback', format: :js # see https://edgeguides.rubyonrails.org/upgrading_ruby_on_rails.html#upgrading-from-rails-4-0-to-rails-4-1
       expect(response).to be_success
       jsonp = response.body
       expect(jsonp[0..12]).to eq('someCallback(')

@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 ruby '2.1.0'
-gem 'rails', '4.0.0'
+gem 'rails', '4.1.0'
 gem 'scoped_search' #, '~> 4.1.7'
 gem 'RedCloth'      #, '~> 4.3.2'
 gem 'dynamic_form'  #, '~> 1.1.4'
